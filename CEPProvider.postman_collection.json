@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "a526cf1d-4031-4d22-91f4-80eaab255472",
+		"name": "CEPProvider",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20301019",
+		"_collection_link": "https://red-capsule-413493.postman.co/workspace/TESTES~2ba40a9e-e400-4c2c-b2a6-bc063db129b1/collection/20301019-a526cf1d-4031-4d22-91f4-80eaab255472?action=share&source=collection_link&creator=20301019"
+	},
+	"item": [
+		{
+			"name": "CEP",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}/cep/01512010",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"cep",
+						"01512010"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://127.0.0.1:8000/api",
+			"type": "string"
+		}
+	]
+}
