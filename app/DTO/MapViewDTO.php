@@ -2,6 +2,8 @@
 
 namespace App\DTO;
 
+use stdClass;
+
 class MapViewDTO
 {
   public float $west;
@@ -9,11 +11,11 @@ class MapViewDTO
   public float $east;
   public float $north;
 
-  public function __construct(array $data)
+  public function __construct(stdClass $data)
   {
-    $this->west = $data['west'];
-    $this->south = $data['south'];
-    $this->east = $data['east'];
-    $this->north = $data['north'];
+    $this->west = $data->west;
+    $this->south = $data->south;
+    $this->east = $data->east;
+    $this->north = $data->north;
   }
 }
