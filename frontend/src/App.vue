@@ -5,20 +5,35 @@ import {
   AccordionItem,
   AccordionTrigger
 } from './components/ui/accordion';
+import { Button } from './components/ui/button';
+import { Input } from './components/ui/input'
+import { ref } from 'vue';
+import { IPostalCode } from '@interface/IPostalCode';
+import { AxiosResponse } from 'axios';
+import { AxiosHttpService } from './service/Http/AxiosHttpService';
 
-const defaultValue = 'item-1';
-const accordionItems = [
-  { value: 'item-1', title: 'Ola mundo', content: 'xpto' },
-  { value: 'item-2', title: 'Tamo por aqui', content: 'xpto' },
-  { value: 'item-3', title: 'tchau mundo', content: 'xpto' },
-];
+const datas = ref<IPostalCode[]>([]);
+const cepInput = ref('');
+const city = ref('');
+
+async function searchAddressByPostalCode(cep: string) {
+  const service = await new AxiosHttpService().get<AxiosResponse>(`cep/${cep}`);
+
+  if (service.status !== 200) return alert('Não foi');
+
+  const { data } = service.data as IPostalCode;
+
+  datas.value.push({ data });
+
+  city.value = data.address.city;
+};
 
 </script>
 
 
 <template>
   <div>
-    <div class="flex w-full justify-center h-full">
+    <div class="flex w-full justify-center">
       <a href="https://vitejs.dev" target="_blank">
         <img src="/vite.svg" class="logo" alt="Vite logo" />
       </a>
@@ -26,10 +41,15 @@ const accordionItems = [
         <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
       </a>
     </div>
-    <Accordion type="single" class="w-full" :default-value="defaultValue">
-      <AccordionItem v-for="item in accordionItems" :key="item.value" :value="item.value">
-        <AccordionTrigger> {{ item.title }} </AccordionTrigger>
-        <AccordionContent> {{ item.content }} </AccordionContent>
+    <Input id="postalCode" type="text" placeholder="00000-000" v-model="cepInput" />
+    <Button id="searchAddressButton" variant="outline" @click="searchAddressByPostalCode(cepInput)"
+      class="flex w-full justify-center">
+      Consultar Cep
+    </Button>
+    <Accordion type="single" class="w-full">
+      <AccordionItem v-for="({ data }, id) in datas" :key="id + 1" :value="data.title">
+        <AccordionTrigger class="address-title"> {{ data.address.city }} </AccordionTrigger>
+        <AccordionContent> {{ id + 1 }}|{{ data.address.countryCode }} </AccordionContent>
       </AccordionItem>
     </Accordion>
   </div>
