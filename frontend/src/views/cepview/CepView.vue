@@ -4,7 +4,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from '../../ui/accordion';
+} from '../../components/ui/accordion';
 import {
   Card,
   CardHeader,
@@ -12,13 +12,13 @@ import {
   CardDescription,
   CardContent,
   CardFooter
-} from '../../ui/card'
-import { Button } from '../../ui/button';
-import { Input } from '../../ui/input'
+} from '../../components/ui/card'
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input'
 import { ref } from 'vue';
 import { IPostalCode } from '@interface/IPostalCode';
 import { AxiosResponse } from 'axios';
-import { AxiosHttpService } from '../../../service/Http/AxiosHttpService';
+import { AxiosHttpService } from '../../service/Http/AxiosHttpService';
 
 const postalAddress = ref<IPostalCode[]>([]);
 const cepInput = ref('');
@@ -48,11 +48,6 @@ async function searchAddressByPostalCode(cep: string) {
 
 <template>
   <div class="flex flex-col items-center justify-center">
-    <div>
-      <div class="w-fit">
-        <img src="../../../assets/image.png" class="logo vue" alt="Vue logo" />
-      </div>
-    </div>
     <Card class="w-full max-w-lg mx-auto px-4 mt-10">
       <CardHeader class="mb-4">
         <CardTitle>Encontre seu Endereço</CardTitle>
@@ -89,8 +84,17 @@ async function searchAddressByPostalCode(cep: string) {
         <AccordionContent v-if="data.address.district && data.address.district.trim() !== ''">
           {{ data.address.district }}
         </AccordionContent>
-        <AccordionContent>
-          {{ data.mapView.west }} | {{ data.mapView.south }} | {{ data.mapView.east }} | {{ data.mapView.north }}
+        <AccordionContent class="border-solid border-2 border-sky-500 rounded-md mr-2">
+          <span class="font-bold"> Oeste: </span> {{ data.mapView.west }}
+        </AccordionContent>
+        <AccordionContent class="border-solid border-2 border-sky-500 rounded-md mr-2">
+          <span class="font-bold"> Sul: </span> {{ data.mapView.south }}
+        </AccordionContent>
+        <AccordionContent class="border-solid border-2 border-sky-500 rounded-md mr-2">
+          <span class="font-bold"> Leste: </span> {{ data.mapView.east }}
+        </AccordionContent>
+        <AccordionContent class="border-solid border-2 border-sky-500 rounded-md mr-2">
+          <span class="font-bold"> Norte: </span> {{ data.mapView.north }}
         </AccordionContent>
       </AccordionItem>
     </Accordion>

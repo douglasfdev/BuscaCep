@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { CepView } from './components/views/cepview'
+import { NavBar } from './views/navbar'
 </script>
 
 <template>
-  <CepView />
+  <NavBar />
 </template>
