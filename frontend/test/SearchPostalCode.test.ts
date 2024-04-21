@@ -1,5 +1,3 @@
-import App from '../src/App.vue';
-import { mount } from '@vue/test-utils';
 import {
   afterEach,
   beforeEach,
