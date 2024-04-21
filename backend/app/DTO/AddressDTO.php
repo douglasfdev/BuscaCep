@@ -12,7 +12,7 @@ class AddressDTO
   public string $stateCode;
   public string $state;
   public string $city;
-  public string $district;
+  public ?string $district;
   public string $postalCode;
 
   public function __construct(stdClass $data)
@@ -23,7 +23,7 @@ class AddressDTO
     $this->stateCode = $data->stateCode;
     $this->state = $data->state;
     $this->city = $data->city;
-    $this->district = $data->district;
+    $this->district = $data->district ?? null;
     $this->postalCode = $data->postalCode;
   }
 }
