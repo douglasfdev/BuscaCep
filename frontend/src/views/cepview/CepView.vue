@@ -21,28 +21,47 @@ import { AxiosResponse } from 'axios';
 import { AxiosHttpService } from '../../infra/domain/Http/AxiosHttpService';
 
 const postalAddress = ref<IPostalCode[]>([]);
-const cepInput = ref('');
+const cepInput = ref<string>('');
+const errorMessage = ref<string>('')
+const addressTitle = ref<string>();
 
-function formatCep() {
+function formatPostalCode() {
   cepInput.value = cepInput.value.replace(/\D/g, '');
   if (cepInput.value.length > 5) {
     cepInput.value = cepInput.value.replace(/^(\d{5})(\d{0,3}).*/, '$1-$2');
   }
 }
 
+function clearErrorMessage() {
+  setTimeout(() => {
+    errorMessage.value = '';
+  }, 2000); // 2000 milissegundos = 2 segundos
+}
+
 async function searchAddressByPostalCode(cep: string) {
   if (!cep) {
-    alert('Por favor, preencha o campo de CEP.');
+    errorMessage.value = "Por favor, preencha o campo de CEP.";
+    clearErrorMessage();
     return;
   }
 
-  const service = await new AxiosHttpService().get<AxiosResponse>(`cep/${cep.replace(/\D/g, '')}`);
+  errorMessage.value = "";
+  try {
+    const service = await new AxiosHttpService().get<AxiosResponse>(`cep/${cep.replace(/\D/g, '')}`);
 
-  if (service.status !== 200) return alert('Não foi');
+    if (service.status !== 200) errorMessage.value = 'Serviço de busca fora do ar';
 
-  const { data } = service.data as IPostalCode;
+    const { data } = service.data as IPostalCode;
 
-  postalAddress.value.push({ data });
+    addressTitle.value = data.address.city
+    postalAddress.value.push({ data });
+  } catch (e) {
+    errorMessage.value = "";
+    if (e instanceof Error) {
+      errorMessage.value = e.message
+    }
+    clearErrorMessage();
+  }
 };
 </script>
 
@@ -54,15 +73,16 @@ async function searchAddressByPostalCode(cep: string) {
         <CardDescription>Utilitário para você encontrar seu endereço</CardDescription>
       </CardHeader>
       <CardContent class="flex flex-col items-center">
-        <Input class="text-black mb-4 postal-code" type="string" placeholder="00000-000" @input="formatCep"
+        <Input class="text-black mb-4 postal-code" type="string" placeholder="00000-000" @input="formatPostalCode"
           v-model="cepInput" />
         <Button variant="outline" @click="searchAddressByPostalCode(cepInput)"
           class="font-bold py-2 px-4 rounded hover:bg-blue-700 hover:text-white text-black search-address-button">
           Consultar Cep
         </Button>
       </CardContent>
-      <CardFooter>
-        Card Footer
+      <CardFooter class="flex items-center justify-center">
+        <span class="error-message bg-orange-600 rounded-md px-2 py-2 text-white" v-if="errorMessage"> {{ errorMessage
+          }} </span>
       </CardFooter>
     </Card>
   </div>
@@ -70,7 +90,7 @@ async function searchAddressByPostalCode(cep: string) {
     <Accordion type="single" class=" w-2/6">
       <AccordionItem v-for="({ data }, id) in postalAddress" :key="id + 1" :value="data.title">
         <AccordionTrigger class="address-title mr-6">
-          #{{ id + 1 }} | {{ data.address.city }}
+          #{{ id + 1 }} | {{ addressTitle }}
           <span class="border-solid border-2 border-sky-500 rounded-md mr-4">
             latitude <span class="flex flec-col px-4"> {{ data.position.lat }}</span>
           </span>

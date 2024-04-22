@@ -19,7 +19,7 @@ describe('Search cep', () => {
     mockAxios.restore();
   });
 
-  it('should fetch address data correctly', async () => {
+  it('Should fetch address data correctly', async () => {
     const mockPostalCode = '01512010';
     const mockResponse = {
       status: 200,
