@@ -15,18 +15,18 @@ import {
 } from '../../components/ui/card'
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input'
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { IPostalCode } from '@interface/IPostalCode';
 import { AxiosError, AxiosResponse } from 'axios';
 import { SearchPostalCodeGateway } from '../../infra/Gateway';
-import { AxiosHttpService } from '../../infra/Http';
 import { PostalCode } from '../../infra/domain/PostalCode';
 
 const postalCode = ref<IPostalCode[]>([]);
 const cepInput = ref<string>('');
 const errorMessage = ref<string>('')
 const postal = ref<PostalCode | null>(null);
-const gateway = new SearchPostalCodeGateway(new AxiosHttpService())
+
+const searchPostalCode = inject("searchPostalCode") as SearchPostalCodeGateway;
 
 function formatPostalCode() {
   cepInput.value = cepInput.value.replace(/\D/g, '');
@@ -50,7 +50,7 @@ async function searchAddressByPostalCode(cep: string) {
 
   errorMessage.value = "";
   try {
-    const service = await gateway.byCep<AxiosResponse>(`${cep.replace(/\D/g, '')}`);
+    const service = await searchPostalCode.byCep<AxiosResponse>(`${cep.replace(/\D/g, '')}`);
 
     if (service.status !== 200) errorMessage.value = 'Serviço de busca fora do ar';
 
