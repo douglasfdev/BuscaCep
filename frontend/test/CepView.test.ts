@@ -8,6 +8,8 @@ import { SearchPostalCodeGateway } from '../src/infra/Gateway';
 
 describe('CepView', () => {
   let mockAxios: MockAdapter;
+  let searchPostalCode: SearchPostalCodeGateway;
+  let wrapper: any;
 
   const mockResponse = {
     status: 200,
@@ -39,6 +41,14 @@ describe('CepView', () => {
 
   beforeEach(() => {
     mockAxios = new MockAdapter(axios);
+    searchPostalCode = new SearchPostalCodeGateway(new AxiosHttpService());
+    wrapper = mount(CepView, {
+      global: {
+        provide: {
+          searchPostalCode
+        }
+      }
+    });
   })
 
   afterEach(() => {
@@ -46,15 +56,6 @@ describe('CepView', () => {
   });
 
   test('Should return a address title', async () => {
-    const searchPostalCode = new SearchPostalCodeGateway(new AxiosHttpService());
-    const wrapper = mount(CepView, {
-      global: {
-        provide: {
-          searchPostalCode
-        }
-      }
-    });
-
     await wrapper.get(".postal-code").setValue("01512010");
 
     mockAxios.onGet(`http://127.0.0.1:8000/api/cep/01512010`).reply(200, mockResponse);
@@ -67,15 +68,6 @@ describe('CepView', () => {
   });
 
   test("Should display error message for invalid cep", async function () {
-    const searchPostalCode = new SearchPostalCodeGateway(new AxiosHttpService());
-    const wrapper = mount(CepView, {
-      global: {
-        provide: {
-          searchPostalCode
-        }
-      }
-    });
-
     await wrapper.get(".postal-code").setValue("asdsadas");
     mockAxios.onGet(`http://127.0.0.1:8000/api/cep/01512010`).reply(200, mockResponse);
 
@@ -87,15 +79,6 @@ describe('CepView', () => {
   });
 
   test("Should clean error message on-existing address in previous search", async function () {
-    const searchPostalCode = new SearchPostalCodeGateway(new AxiosHttpService());
-    const wrapper = mount(CepView, {
-      global: {
-        provide: {
-          searchPostalCode
-        }
-      }
-    });
-
     await wrapper.get(".postal-code").setValue("asdsadas");
     mockAxios.onGet(`http://127.0.0.1:8000/api/cep/01512010`).reply(200, mockResponse);
 
