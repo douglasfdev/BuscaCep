@@ -1,11 +1,13 @@
 export interface IPostalCode {
-  data: {
-    title: string;
-    localityType: string;
-    address: IAddres;
-    position: IPosition;
-    mapView: IMapView;
-  }
+  data: Data
+}
+
+interface Data {
+  title: string;
+  localityType: string;
+  address: IAddres;
+  position: IPosition;
+  mapView: IMapView;
 }
 
 interface IAddres {

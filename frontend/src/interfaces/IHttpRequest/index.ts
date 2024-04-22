@@ -1,3 +1,3 @@
 export interface IHttpRequest {
-  get<T>(url: string): Promise<T>;
+  get<T = any>(url: string): Promise<T>;
 }

@@ -2,7 +2,8 @@ import MockAdapter from 'axios-mock-adapter';
 import CepView from '../src/views/cepview/CepView.vue';
 import { mount } from '@vue/test-utils';
 import axios, { AxiosResponse } from 'axios';
-import { AxiosHttpService } from '../src/infra/domain/Http/AxiosHttpService';
+import { AxiosHttpService } from '../src/infra/Http/AxiosHttpService';
+import { SearchPostalCodeGateway } from '../src/infra/Gateway';
 
 
 describe('CepView', () => {
@@ -52,8 +53,8 @@ describe('CepView', () => {
     mockAxios.onGet(`http://127.0.0.1:8000/api/cep/01512010`).reply(200, mockResponse);
 
     await wrapper.get(".search-address-button").trigger("click");
-    const service = new AxiosHttpService();
-    await service.get(`cep/01512010`) as AxiosResponse;
+    const service = new SearchPostalCodeGateway(new AxiosHttpService());
+    await service.byCep(`01512010`) as AxiosResponse;
 
     expect(wrapper.find("#error-message").exists()).toBeFalsy();
     expect(wrapper.get(".address-title").text()).toBe("#1 | São Paulo  latitude -23.55329 longitude -46.62877");
@@ -66,8 +67,8 @@ describe('CepView', () => {
     mockAxios.onGet(`http://127.0.0.1:8000/api/cep/01512010`).reply(200, mockResponse);
 
     await wrapper.get(".search-address-button").trigger("click");
-    const service = new AxiosHttpService();
-    await service.get(`cep/01512010`) as AxiosResponse;
+    const service = new SearchPostalCodeGateway(new AxiosHttpService());
+    await service.byCep(`01512010`) as AxiosResponse;
 
     expect(wrapper.find(".address-title").exists()).toBeFalsy();
     expect(wrapper.find("#error-message").exists()).toBeFalsy();
@@ -80,15 +81,15 @@ describe('CepView', () => {
     mockAxios.onGet(`http://127.0.0.1:8000/api/cep/01512010`).reply(200, mockResponse);
 
     await wrapper.get(".search-address-button").trigger("click");
-    const service = new AxiosHttpService();
-    await service.get(`cep/01512010`) as AxiosResponse;
+    const service = new SearchPostalCodeGateway(new AxiosHttpService());
+    await service.byCep(`01512010`) as AxiosResponse;
 
     expect(wrapper.find(".address-title").exists()).toBeFalsy();
     expect(wrapper.find("#error-message").exists()).toBeFalsy();
 
     await wrapper.get(".postal-code").setValue("01512010");
     await wrapper.get(".search-address-button").trigger("click");
-    await service.get(`cep/01512010`) as AxiosResponse;
+    await service.byCep(`01512010`) as AxiosResponse;
 
     expect(wrapper.find("#error-message").exists()).toBeFalsy();
     expect(wrapper.get(".address-title").text()).toBe("#1 | São Paulo  latitude -23.55329 longitude -46.62877");

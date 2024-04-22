@@ -18,12 +18,15 @@ import { Input } from '../../components/ui/input'
 import { ref } from 'vue';
 import { IPostalCode } from '@interface/IPostalCode';
 import { AxiosError, AxiosResponse } from 'axios';
-import { AxiosHttpService } from '../../infra/domain/Http/AxiosHttpService';
+import { SearchPostalCodeGateway } from '../../infra/Gateway';
+import { AxiosHttpService } from '../../infra/Http';
+import { PostalCode } from '../../infra/domain/PostalCode';
 
-const postalAddress = ref<IPostalCode[]>([]);
+const postalCode = ref<IPostalCode[]>([]);
 const cepInput = ref<string>('');
 const errorMessage = ref<string>('')
-const addressTitle = ref<string>();
+const postal = ref<PostalCode | null>(null);
+const gateway = new SearchPostalCodeGateway(new AxiosHttpService())
 
 function formatPostalCode() {
   cepInput.value = cepInput.value.replace(/\D/g, '');
@@ -47,14 +50,14 @@ async function searchAddressByPostalCode(cep: string) {
 
   errorMessage.value = "";
   try {
-    const service = await new AxiosHttpService().get<AxiosResponse>(`cep/${cep.replace(/\D/g, '')}`);
+    const service = await gateway.byCep<AxiosResponse>(`${cep.replace(/\D/g, '')}`);
 
     if (service.status !== 200) errorMessage.value = 'Serviço de busca fora do ar';
 
     const { data } = service.data as IPostalCode;
 
-    addressTitle.value = data.address.city
-    postalAddress.value.push({ data });
+    postal.value = new PostalCode(cep, data.address.city);
+    postalCode.value.push({ data });
   } catch (e) {
     errorMessage.value = "";
     if (e instanceof AxiosError) {
@@ -88,9 +91,9 @@ async function searchAddressByPostalCode(cep: string) {
   </div>
   <div class="flex justify-center mt-14">
     <Accordion type="single" class=" w-2/6">
-      <AccordionItem v-for="({ data }, id) in postalAddress" :key="id + 1" :value="data.title">
+      <AccordionItem v-for="({ data }, id) in postalCode" :key="id + 1" :value="data.title">
         <AccordionTrigger class="address-title mr-6">
-          #{{ id + 1 }} | {{ addressTitle }}
+          #{{ id + 1 }} | {{ postal?.city }}
           <span class="border-solid border-2 border-sky-500 rounded-md mr-4">
             latitude <span class="flex flec-col px-4"> {{ data.position.lat }}</span>
           </span>
