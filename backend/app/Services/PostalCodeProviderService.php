@@ -4,12 +4,12 @@ namespace App\Services;
 
 use App\DTO\PostalCodeResponseDTO;
 use App\Enums\HttpStatusCode;
-use App\Interfaces\PostalCodeServiceInterface;
+use App\Interfaces\IPostalCode;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
 
-class PostalCodeProviderService implements PostalCodeServiceInterface
+class PostalCodeProviderService implements IPostalCode
 {
   private static $cepLength = 8;
 

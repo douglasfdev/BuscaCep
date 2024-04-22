@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\PostalCodeControllerInterface;
+use App\Interfaces\IPostalCode;
 use App\Services\PostalCodeProviderService as ServicesCepProviderService;
 
-class PostalCodeProviderController extends Controller implements PostalCodeControllerInterface
+class PostalCodeProviderController extends Controller implements IPostalCode
 {
     public function __construct(private readonly ServicesCepProviderService $cepProviderService)
     {

@@ -2,11 +2,13 @@
 
 namespace App\Interfaces;
 
-interface PostalCodeServiceInterface
+use Illuminate\Http\Request;
+
+interface IPostalCode
 {
   /**
    * @param string $cep Cep to search
    * @return \Illuminate\Http\JsonResponse Response json of request
    */
-  public function getAddresByPostalCode(int $postalCode);
+  public function getAddresByPostalCode(int $cep);
 }
