@@ -17,7 +17,7 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input'
 import { ref } from 'vue';
 import { IPostalCode } from '@interface/IPostalCode';
-import { AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { AxiosHttpService } from '../../infra/domain/Http/AxiosHttpService';
 
 const postalAddress = ref<IPostalCode[]>([]);
@@ -57,8 +57,8 @@ async function searchAddressByPostalCode(cep: string) {
     postalAddress.value.push({ data });
   } catch (e) {
     errorMessage.value = "";
-    if (e instanceof Error) {
-      errorMessage.value = e.message
+    if (e instanceof AxiosError) {
+      errorMessage.value = e.response?.data.error
     }
     clearErrorMessage();
   }
