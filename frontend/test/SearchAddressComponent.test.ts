@@ -2,13 +2,8 @@ import MockAdapter from 'axios-mock-adapter';
 import CepView from '../src/views/cepview/CepView.vue';
 import { mount } from '@vue/test-utils';
 import axios, { AxiosResponse } from 'axios';
-import { AxiosHttpService } from '../src/service/Http/AxiosHttpService';
+import { AxiosHttpService } from '../src/infra/domain/Http/AxiosHttpService';
 
-function sleep(time: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-}
 describe('SearchAddressComponent', () => {
   let mockAxios: MockAdapter;
 

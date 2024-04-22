@@ -7,7 +7,7 @@ import {
 } from 'vitest';
 import MockAdapter from 'axios-mock-adapter';
 import axios, { AxiosResponse } from 'axios';
-import { AxiosHttpService } from '../src/service/Http/AxiosHttpService';
+import { AxiosHttpService } from '../src/infra/domain/Http/AxiosHttpService';
 
 describe('Search cep', () => {
   let mockAxios: MockAdapter;

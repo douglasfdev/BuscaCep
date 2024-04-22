@@ -18,7 +18,7 @@ import { Input } from '../../components/ui/input'
 import { ref } from 'vue';
 import { IPostalCode } from '@interface/IPostalCode';
 import { AxiosResponse } from 'axios';
-import { AxiosHttpService } from '../../service/Http/AxiosHttpService';
+import { AxiosHttpService } from '../../infra/domain/Http/AxiosHttpService';
 
 const postalAddress = ref<IPostalCode[]>([]);
 const cepInput = ref('');
