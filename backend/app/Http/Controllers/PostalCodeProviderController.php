@@ -11,7 +11,7 @@ class PostalCodeProviderController extends Controller implements PostalCodeContr
     {
     }
 
-    public function getAddresByPostalCode(int $cep): \Illuminate\Http\JsonResponse
+    public function getAddresByPostalCode(int $cep)
     {
         return $this->cepProviderService->getAddresByPostalCode($cep);
     }

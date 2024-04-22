@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 it('can retrieve address information by cep', function () {
-    // Mock the response from the API
     Http::fake([
         'https://geocode.search.hereapi.com/v1/geocode?q=01512010&apiKey=be1hHQrytN0izt1ZAfwMHj5NLwdG0AHGBBb13FUjcGk' => Http::response([
             "items" => [
@@ -46,15 +45,12 @@ it('can retrieve address information by cep', function () {
         ], 200),
     ]);
 
-    // Instantiate the AddressService
     $addressService = new PostalCodeProviderService(new Http());
 
-    // Call the method to get address information
-    $response = $addressService->getAddresByPostalCode(1512010); // Modified to pass a string
+    $response = $addressService->getAddresByPostalCode(1512010);
     $content = $response->getContent();
     $data = json_decode($content, true);
 
-    // Assert that the response contains the expected address information
     expect($data)->toBe([
         "data" => [
             "title" => "01512-010, São Paulo, SP, Brasil",

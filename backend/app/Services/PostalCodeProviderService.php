@@ -6,6 +6,7 @@ use App\DTO\PostalCodeResponseDTO;
 use App\Enums\HttpStatusCode;
 use App\Interfaces\PostalCodeServiceInterface;
 use Illuminate\Http\Client\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
 
 class PostalCodeProviderService implements PostalCodeServiceInterface
@@ -16,7 +17,7 @@ class PostalCodeProviderService implements PostalCodeServiceInterface
   {
   }
 
-  public function getAddresByPostalCode(int $cep): \Illuminate\Http\JsonResponse
+  public function getAddresByPostalCode(int $cep)
   {
     $request = $this->handleRequest($cep);
 
@@ -24,7 +25,9 @@ class PostalCodeProviderService implements PostalCodeServiceInterface
 
     $request = $this->verifyExistsData($request);
 
-    return response()->json([
+    if ($request->original) return response()->json($request->original, HttpStatusCode::BadRequest->value);
+
+    return new JsonResponse([
       'data' => $this->buildResponseData($request->json()['items'][0])
     ], HttpStatusCode::OK->value);
   }

@@ -10,5 +10,5 @@ interface PostalCodeControllerInterface
    * @param string $cep Cep to search
    * @return \Illuminate\Http\JsonResponse Response json of request
    */
-  public function getAddresByPostalCode(int $cep): \Illuminate\Http\JsonResponse;
+  public function getAddresByPostalCode(int $cep);
 }
