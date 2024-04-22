@@ -23,9 +23,19 @@ class PostalCodeProviderService implements PostalCodeServiceInterface
 
     $request = $this->verifyRetriveSuccess($request);
 
+    if (isset($request->original))
+      return response()->json(
+        $request->original,
+        HttpStatusCode::BadRequest->value
+      );
+
     $request = $this->verifyExistsData($request);
 
-    if ($request->original) return response()->json($request->original, HttpStatusCode::BadRequest->value);
+    if (isset($request->original))
+      return response()->json(
+        $request->original,
+        HttpStatusCode::BadRequest->value
+      );
 
     return new JsonResponse([
       'data' => $this->buildResponseData($request->json()['items'][0])
@@ -34,12 +44,20 @@ class PostalCodeProviderService implements PostalCodeServiceInterface
 
   private function verifyExistsData($request)
   {
-    return empty($request['items']) ? $this->notFound() : $request;
+    if (empty($request['items'])) {
+      return $this->notFound();
+    }
+
+    return $request;
   }
 
   private function verifyRetriveSuccess($request)
   {
-    return !$request->successful() ? $this->notSuccess() : $request;
+    if (!$request->successful()) {
+      return $this->notSuccess();
+    }
+
+    return $request;
   }
 
   private function notFound()
