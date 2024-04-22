@@ -35,7 +35,7 @@ function formatPostalCode() {
 function clearErrorMessage() {
   setTimeout(() => {
     errorMessage.value = '';
-  }, 2000); // 2000 milissegundos = 2 segundos
+  }, 5000);
 }
 
 async function searchAddressByPostalCode(cep: string) {
@@ -81,8 +81,8 @@ async function searchAddressByPostalCode(cep: string) {
         </Button>
       </CardContent>
       <CardFooter class="flex items-center justify-center">
-        <span class="error-message bg-orange-600 rounded-md px-2 py-2 text-white" v-if="errorMessage"> {{ errorMessage
-          }} </span>
+        <span id="error-message" class="error-message bg-orange-600 rounded-md px-2 py-2 text-white"
+          v-if="errorMessage"> {{ errorMessage }} </span>
       </CardFooter>
     </Card>
   </div>

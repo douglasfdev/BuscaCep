@@ -55,7 +55,7 @@ describe('CepView', () => {
     const service = new AxiosHttpService();
     await service.get(`cep/01512010`) as AxiosResponse;
 
-    expect(wrapper.find(".error-message").exists()).toBeFalsy();
+    expect(wrapper.find("#error-message").exists()).toBeFalsy();
     expect(wrapper.get(".address-title").text()).toBe("#1 | São Paulo  latitude -23.55329 longitude -46.62877");
   });
 
@@ -70,7 +70,7 @@ describe('CepView', () => {
     await service.get(`cep/01512010`) as AxiosResponse;
 
     expect(wrapper.find(".address-title").exists()).toBeFalsy();
-    expect(wrapper.find(".error-message").exists()).toBeTruthy();
+    expect(wrapper.find("#error-message").exists()).toBeFalsy();
   });
 
   test("Should clean error message on-existing address in previous search", async function () {
@@ -84,13 +84,13 @@ describe('CepView', () => {
     await service.get(`cep/01512010`) as AxiosResponse;
 
     expect(wrapper.find(".address-title").exists()).toBeFalsy();
-    expect(wrapper.find(".error-message").exists()).toBeTruthy();
+    expect(wrapper.find("#error-message").exists()).toBeFalsy();
 
     await wrapper.get(".postal-code").setValue("01512010");
     await wrapper.get(".search-address-button").trigger("click");
     await service.get(`cep/01512010`) as AxiosResponse;
 
-    expect(wrapper.find(".error-message").exists()).toBeFalsy();
+    expect(wrapper.find("#error-message").exists()).toBeFalsy();
     expect(wrapper.get(".address-title").text()).toBe("#1 | São Paulo  latitude -23.55329 longitude -46.62877");
   });
 });
