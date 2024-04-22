@@ -54,10 +54,10 @@ async function searchAddressByPostalCode(cep: string) {
         <CardDescription>Utilitário para você encontrar seu endereço</CardDescription>
       </CardHeader>
       <CardContent class="flex flex-col items-center">
-        <Input class="text-black mb-4" id="postalCode" type="string" placeholder="00000-000" @input="formatCep"
+        <Input class="text-black mb-4 postal-code" type="string" placeholder="00000-000" @input="formatCep"
           v-model="cepInput" />
-        <Button id="searchAddressButton" variant="outline" @click="searchAddressByPostalCode(cepInput)"
-          class="font-bold py-2 px-4 rounded hover:bg-blue-700 hover:text-white text-black">
+        <Button variant="outline" @click="searchAddressByPostalCode(cepInput)"
+          class="font-bold py-2 px-4 rounded hover:bg-blue-700 hover:text-white text-black search-address-button">
           Consultar Cep
         </Button>
       </CardContent>
@@ -72,7 +72,7 @@ async function searchAddressByPostalCode(cep: string) {
         <AccordionTrigger class="address-title mr-6">
           #{{ id + 1 }} | {{ data.address.city }}
           <span class="border-solid border-2 border-sky-500 rounded-md mr-4">
-            latitude: <span class="flex flec-col px-4"> {{ data.position.lat }}</span>
+            latitude <span class="flex flec-col px-4"> {{ data.position.lat }}</span>
           </span>
           <span class="border-solid border-2 border-sky-500 rounded-md mr-2">
             longitude <span class="flex flec-col px-4"> {{ data.position.lng }} </span>
@@ -85,7 +85,7 @@ async function searchAddressByPostalCode(cep: string) {
           {{ data.address.district }}
         </AccordionContent>
         <AccordionContent class="border-solid border-2 border-sky-500 rounded-md mr-2">
-          <span class="font-bold"> Oeste: </span> {{ data.mapView.west }}
+          <span class="font-bold mt-4"> Oeste: </span> {{ data.mapView.west }}
         </AccordionContent>
         <AccordionContent class="border-solid border-2 border-sky-500 rounded-md mr-2">
           <span class="font-bold"> Sul: </span> {{ data.mapView.south }}
@@ -100,20 +100,3 @@ async function searchAddressByPostalCode(cep: string) {
     </Accordion>
   </div>
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
